@@ -1,6 +1,6 @@
 const getAllProducts =  async(req,res) => {
     res.status(200).json({
-        first : "hurrah!!!",
+        first : "this is my first api",
         success :true
     })
 }
