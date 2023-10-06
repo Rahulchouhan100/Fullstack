@@ -2,6 +2,12 @@ const express = require('express')
 const app = express();
 
 const port = 4000;
+
+const product_routes = require('./controllers/product')
+
+
+app.use("/api/products",product_routes)
+
 app.get('/', (req, res) => {
   res.send('hello world')
 })
