@@ -1,30 +1,46 @@
-const express = require('express')
+
+require("dotenv").config();
+const express = require("express");
 const app = express();
 
-const port = 4000;
+const connectDB = require("./db/connect");
 
-const product_routes = require('./controllers/product')
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
+const port = process.env.PORT || 4000;
 
-app.use("/api/products",product_routes)
+const product_routes = require("./routes/productRoutes");
+const learningnode = require("./controllers/learningNode");
 
-app.get('/', (req, res) => {
-  res.send('hello world')
-})
+app.use("/api/products", product_routes);
+app.use("/api/learning",learningnode)
 
-app.get('/api/testing', (req, res) => {
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+app.get("/api/testing", (req, res) => {
   const details = [
     {
-      name :"rahul",
-      skills :"Javascript"
+      name: "rahul",
+      skills: "Javascript",
     },
     {
-      name :"Rehan",
-      skills :"React"
+      name: "Rehan",
+      skills: "React",
     },
+  ];
+  res.json(details);
+});
 
-  ]
-    res.json(details)
+const start = async () => {
+  try {
+    await connectDB();
+    app.listen(port, () => console.log(`server listing on ${port}`));
+  } catch(error){
+    console.log(error)
+  }
+};
 
-  })
-app.listen(port, () => console.log(`server listing on ${port}`))
+start();
